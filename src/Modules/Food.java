@@ -1,6 +1,6 @@
 package Modules;
 
-import java.util.ArrayList;
+import Connections.MyJDBC;
 
 public class Food {
     private String foodName;
@@ -25,6 +25,10 @@ public class Food {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean addFood(){
+        return MyJDBC.addFood(this);
     }
 
 }

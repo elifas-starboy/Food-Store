@@ -1,7 +1,9 @@
 package Connections;
 
 import CommonComponents.Components;
+import Modules.Food;
 import Modules.User;
+import com.sun.source.tree.TryTree;
 
 import java.sql.*;
 
@@ -17,7 +19,7 @@ public class MyJDBC {
         }
     }
 
-    // METHOD TO REGISTER USERS
+    // METHOD TO REGISTER A NEW CUSTOMER
     public static boolean register(User user){
 
         String sql = "INSERT INTO "+Components.USER_TABLE+ "(username, password, role) VALUES(?,?,?)";
@@ -38,6 +40,7 @@ public class MyJDBC {
         }
     }
 
+    // METHOD TO LOGIN
     public static String login(String username, String password){
 
         String sql = "SELECT role FROM "+Components.USER_TABLE + " WHERE username = ? AND password = ?";
@@ -57,6 +60,26 @@ public class MyJDBC {
         }
 
         return null;
+    }
+
+
+    // METHOD TO ADD FOOD IN THE TABLE
+
+    public static boolean addFood(Food food) {
+
+        String sql = "INSERT INTO "+Components.FOOD_TABLE+" (foodName, price) VALUES(?,?)";
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql)) {
+
+            preSt.setString(1,food.getFoodName());
+            preSt.setDouble(2, food.getPrice());
+
+            return preSt.executeUpdate() > 0;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

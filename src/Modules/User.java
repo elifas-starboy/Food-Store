@@ -8,7 +8,7 @@ public abstract class User {
 
     public User(String username, String password, String role){
         this.username = username;
-        this.password = username;
+        this.password = password;
         this.role = role;
     }
 
