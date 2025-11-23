@@ -2,6 +2,8 @@ package Modules;
 
 import Connections.MyJDBC;
 
+import java.util.ArrayList;
+
 public class Food {
     private String foodName;
     private double price;
@@ -29,6 +31,12 @@ public class Food {
 
     public boolean addFood(){
         return MyJDBC.addFood(this);
+    }
+
+    // DISPLAY CONTENT IN THIS FORMAT
+    @Override
+    public String toString(){
+        return foodName+" -> "+price;
     }
 
 }

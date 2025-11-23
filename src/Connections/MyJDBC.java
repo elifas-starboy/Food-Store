@@ -6,6 +6,7 @@ import Modules.User;
 import com.sun.source.tree.TryTree;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class MyJDBC {
 
@@ -80,6 +81,28 @@ public class MyJDBC {
             e.printStackTrace();
             return false;
         }
+    }
+
+    // METHOD TO VIEW FOOD AND PRICE
+    public static ArrayList<Food> viewAllFood(){
+
+        ArrayList<Food> foods = new ArrayList<>();
+
+        String sql = "SELECT * FROM "+Components.FOOD_TABLE;
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql); ResultSet rs = preSt.executeQuery()){
+
+            while (rs.next()){
+                foods.add(new Food(
+                        rs.getString("foodName"),
+                        rs.getDouble("price")
+                ));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return foods;
     }
 
 }

@@ -1,5 +1,6 @@
 // USE MySQL AS THE DATABASE TO STORE ALL YOUR APPLICATION RECORDS
 
+import Connections.MyJDBC;
 import Modules.Customer;
 import Modules.Food;
 
@@ -39,22 +40,47 @@ public class Main {
                         System.out.println("Logged in Successfully!\n");
 
                         //  ENTER ADMIN MODULE LATER
-                        System.out.print("1.View All Food\n2.Add New Food\n3.Update Food price\n4.Update Food Name\n5.Remove Food\n6.Logout");
-                        int adminInput = input.nextInt();
 
-                        Food food = new Food("",0.00);
+                        while (true) {
+
+                            System.out.print("1.View All Food\n2.Add New Food\n3.Update Food Name\n4.Update Food price\n5.Remove Food\n6.Logout\n: ");
+                            int adminInput = input.nextInt();
+
+                            Food food = new Food("",0.00);
 
 
-                        if (adminInput == 1) {
+                            if (adminInput == 1) {
+                                System.out.println("Menu");
+                                for(Food viewFood: MyJDBC.viewAllFood()){
+                                    System.out.println(viewFood);
+                                }
+                                System.out.println();
 
-                        } else if (adminInput == 2) {
-                            System.out.print("Enter Food Name : ");
-                            String foodName = input.next().trim();
-                            input.nextLine();
-                            System.out.print("Enter Food price : ");
-                            double price = input.nextDouble();
+                            } else if (adminInput == 2) {
+                                System.out.print("Enter Food Name : ");
+                                String foodName = input.next().trim();
+                                input.nextLine();
+                                System.out.print("Enter Food price : ");
+                                double price = input.nextDouble();
+
+                                Food newFood = new Food(foodName,price);
+
+                                if (newFood.addFood()){
+                                    System.out.println("Food added successfully!");
+                                } else {
+                                    System.out.println("Something went wrong try again!");
+                                }
+
+                            } else if (adminInput == 3){
+                                System.out.print("");
+
+                            } else if (adminInput == 6){
+                                System.out.println("Logged out in the admin panel!");
+                                break;
+                            }
 
                         }
+
 
 
 
