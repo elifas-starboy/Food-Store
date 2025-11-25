@@ -37,6 +37,7 @@ public class MyJDBC {
 
         } catch (SQLException e){
             e.printStackTrace();
+            System.out.println("Something went wrong! RESTART APPLICATION");
             return false;
         }
     }
@@ -58,6 +59,7 @@ public class MyJDBC {
 
         } catch (SQLException e){
             e.printStackTrace();
+            System.out.println("Something went wrong! RESTART APPLICATION");
         }
 
         return null;
@@ -68,17 +70,19 @@ public class MyJDBC {
 
     public static boolean addFood(Food food) {
 
-        String sql = "INSERT INTO "+Components.FOOD_TABLE+" (foodName, price) VALUES(?,?)";
+        String sql = "INSERT INTO "+Components.FOOD_TABLE+" (foodName, price, quantity) VALUES(?, ?, ?)";
 
         try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql)) {
 
             preSt.setString(1,food.getFoodName());
             preSt.setDouble(2, food.getPrice());
+            preSt.setInt(3, food.getQuantity());
 
             return preSt.executeUpdate() > 0;
 
         } catch (SQLException e){
             e.printStackTrace();
+            System.out.println("Something went wrong! RESTART APPLICATION");
             return false;
         }
     }
@@ -94,15 +98,44 @@ public class MyJDBC {
 
             while (rs.next()){
                 foods.add(new Food(
+                        rs.getInt("foodId"),
                         rs.getString("foodName"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getInt("quantity")
                 ));
             }
         } catch (SQLException e){
             e.printStackTrace();
+            System.out.println("Something went wrong! RESTART APPLICATION");
         }
 
         return foods;
+    }
+
+    // METHOD TO UPDATE FOOD NAME
+    public static boolean updateFood(Food food) {
+
+        String sql = "UPDATE "+Components.FOOD_TABLE+" SET foodName = ?, price = ? , quantity = ? WHERE foodId = ? ";
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql); ){
+
+            preSt.setString(1, food.getFoodName());
+            preSt.setDouble(2, food.getPrice());
+            preSt.setInt(3, food.getQuantity());
+            preSt.setInt(4, food.getFoodId());
+            return preSt.executeUpdate() > 0;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Something went wrong! RESTART APPLICATION");
+            return false;
+        }
+
+        // METHOD TO DELETE FOOD
+
+
+
+
     }
 
 }

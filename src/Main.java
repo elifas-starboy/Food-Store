@@ -37,20 +37,18 @@ public class Main {
                     String userType =  customer.login(username,password);
 
                     if ("Admin".equals(userType)) {
+                        System.out.println();
                         System.out.println("Logged in Successfully!\n");
 
                         //  ENTER ADMIN MODULE LATER
 
                         while (true) {
 
-                            System.out.print("1.View All Food\n2.Add New Food\n3.Update Food Name\n4.Update Food price\n5.Remove Food\n6.Logout\n: ");
+                            System.out.print("1.View All Food\n2.Add New Food\n3.Update Food\n4.Remove Food\n5.Logout\n: ");
                             int adminInput = input.nextInt();
 
-                            Food food = new Food("",0.00);
-
-
                             if (adminInput == 1) {
-                                System.out.println("Menu");
+                                System.out.println("\nMenu");
                                 for(Food viewFood: MyJDBC.viewAllFood()){
                                     System.out.println(viewFood);
                                 }
@@ -62,27 +60,52 @@ public class Main {
                                 input.nextLine();
                                 System.out.print("Enter Food price : ");
                                 double price = input.nextDouble();
+                                input.nextLine();
+                                System.out.print("Enter quantity : ");
+                                int quantity = input.nextInt();
 
-                                Food newFood = new Food(foodName,price);
+                                Food newFood = new Food(0,foodName,price, quantity);
 
                                 if (newFood.addFood()){
-                                    System.out.println("Food added successfully!");
+
+                                    System.out.println("\nFood added successfully!");
                                 } else {
-                                    System.out.println("Something went wrong try again!");
+                                    System.out.println("\nSomething went wrong try again!");
                                 }
 
                             } else if (adminInput == 3){
-                                System.out.print("");
+                                // ADD UPDATE FOOD LATER
+                                System.out.print("Enter food ID : ");
+                                int foodId = input.nextInt();
+                                input.nextLine();
+                                System.out.print("Enter new food name : ");
+                                String foodName = input.next();
+                                input.nextLine();
+                                System.out.print("Enter new price : ");
+                                double price = input.nextDouble();
+                                input.nextLine();
+                                System.out.print("Enter new quantity : ");
+                                int quantity = input.nextInt();
+                                input.nextLine();
 
-                            } else if (adminInput == 6){
+                                Food updatedFood = new Food(foodId,foodName,price,quantity);
+
+                                if (updatedFood.updateFood()){
+                                    System.out.println("\nUpdated food successful!");
+                                } else {
+                                    System.out.println("\nSomething went wrong try again!");
+                                }
+
+
+                            } else if (adminInput == 4) {
+                                // ADD REMOVE FOOD LATER
+
+                            } else if (adminInput == 5){
                                 System.out.println("Logged out in the admin panel!");
                                 break;
                             }
 
                         }
-
-
-
 
 
                     }  else if ("Customer".equals(userType)){
@@ -121,18 +144,13 @@ public class Main {
                         System.out.println("Password does not match! Try again!");
                     }
 
-
-
                 }
-
-
-
 
             }
 
 
         } catch (Exception e){
-            System.out.println("Something went wrong");
+            System.out.println("Something went wrong! RESTART APPLICATION");
 
         }
     }
