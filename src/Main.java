@@ -14,7 +14,7 @@ public class Main {
         try {
 
             while (true){
-                System.out.println("============ Welcome to Quick Bite ============");
+                System.out.println("\n============ Welcome to Quick Bite ============");
                 System.out.print("1. Login\n2. Register\n3. Exit\n: ");
                 int operation = input.nextInt();
 
@@ -37,85 +37,142 @@ public class Main {
                     String userType =  customer.login(username,password);
 
                     if ("Admin".equals(userType)) {
-                        System.out.println();
-                        System.out.println("Logged in Successfully!\n");
+                        System.out.print("\nLogged in Successfully!\n");
 
                         //  ENTER ADMIN MODULE LATER
 
                         while (true) {
 
-                            System.out.print("1.View All Food\n2.Add New Food\n3.Update Food\n4.Remove Food\n5.Logout\n: ");
-                            int adminInput = input.nextInt();
+                            System.out.println("\n============ Welcome To The Admin Panel ============");
+                            System.out.print("1.Manage Food\n2.Manage Customers\n3.Logout\n: ");
+                            int adminChoice = input.nextInt();
 
-                            if (adminInput == 1) {
-                                System.out.println("\nMenu");
-                                for(Food viewFood: MyJDBC.viewAllFood()){
-                                    System.out.println(viewFood);
+                            if (adminChoice == 1 ) {
+
+                                try {
+                                    while (true) {
+                                        System.out.println("\n============ Welcome To The Food Panel ============");
+                                        System.out.print("1.View All Food\n2.Add New Food\n3.Update Food\n4.Remove Food\n5.Logout this panel\n: ");
+                                        int adminInput = input.nextInt();
+
+                                        if (adminInput == 1) {
+                                            System.out.println("\nMenu");
+                                            for(Food viewFood: MyJDBC.viewAllFood()){
+                                                System.out.println(viewFood);
+                                            }
+                                            System.out.println();
+
+                                        } else if (adminInput == 2) {
+                                            System.out.print("Enter Food Name : ");
+                                            String foodName = input.next().trim();
+                                            input.nextLine();
+                                            System.out.print("Enter Food price : ");
+                                            double price = input.nextDouble();
+                                            input.nextLine();
+                                            System.out.print("Enter quantity : ");
+                                            int quantity = input.nextInt();
+
+                                            Food newFood = new Food(0,foodName,price, quantity);
+
+                                            if (newFood.addFood()){
+
+                                                System.out.print("\nFood added successfully!\n");
+                                            } else {
+                                                System.out.print("\nSomething went wrong try again!\n");
+                                            }
+
+                                        } else if (adminInput == 3){
+                                            // ADD UPDATE FOOD LATER
+                                            System.out.print("Enter food ID : ");
+                                            int foodId = input.nextInt();
+                                            input.nextLine();
+                                            System.out.print("Enter new food name : ");
+                                            String foodName = input.next();
+                                            input.nextLine();
+                                            System.out.print("Enter new price : ");
+                                            double price = input.nextDouble();
+                                            input.nextLine();
+                                            System.out.print("Enter new quantity : ");
+                                            int quantity = input.nextInt();
+                                            input.nextLine();
+
+                                            Food updatedFood = new Food(foodId,foodName,price,quantity);
+
+                                            if (updatedFood.updateFood()){
+                                                System.out.print("\nUpdated food successful!\n");
+                                            } else {
+                                                System.out.print("\nSomething went wrong try again!\n");
+                                            }
+
+
+                                        } else if (adminInput == 4) {
+                                            System.out.print("\nEnter Food Id To Be Deleted : ");
+                                            int id = input.nextInt();
+
+                                            Food deleteFood = new Food(0,"",0.0,0);
+
+                                            if(deleteFood.deleteFood(id)){
+                                                System.out.print("\nFood of id = "+id+" Deleted successfully\n");
+                                            } else {
+                                                System.out.print("\nSomething went try again\n");
+                                            }
+
+                                        } else if (adminInput == 5){
+                                            System.out.print("\nLogged out the food panel!\n");
+                                            break;
+                                        }
+
+                                    }
+                                } catch (Exception e){
+                                    System.out.println("Something went wrong try again!");
                                 }
-                                System.out.println();
 
-                            } else if (adminInput == 2) {
-                                System.out.print("Enter Food Name : ");
-                                String foodName = input.next().trim();
-                                input.nextLine();
-                                System.out.print("Enter Food price : ");
-                                double price = input.nextDouble();
-                                input.nextLine();
-                                System.out.print("Enter quantity : ");
-                                int quantity = input.nextInt();
+                            } else if ( adminChoice == 2 ){
+                                // Add Admin customer manage module later
+                                try {
+                                    while (true) {
+                                        System.out.println("\n============ Welcome To The Customer Panel ============");
+                                        System.out.print("1.View all customers\n2.Add new customer\n3.Update customer details\n4.Delete a customer\n5.Logout this panel\n: ");
+                                        int adminCustomer = input.nextInt();
 
-                                Food newFood = new Food(0,foodName,price, quantity);
+                                        if (adminCustomer == 1){
+                                            // ADD A MODULE TO VIEW ALL CUSTOMER LATER
+                                        } else if (adminCustomer == 2) {
+                                            // ADD A MODULE TO ADD A NEW CUSTOMER LATER
+                                        } else if (adminCustomer == 3) {
+                                            // ADD MODULE TO UPDATE CUSTOMER DETAILS
+                                        } else if (adminCustomer == 4) {
+                                            // ADD A MODULE TO DELETE A CUSTOMER
+                                        } else if (adminChoice == 5) {
+                                            System.out.println("\nLogged out the customer panel!");
+                                            break;
+                                        } else {
+                                            System.out.println("\nInvalid Input Try Again!");
+                                        }
 
-                                if (newFood.addFood()){
-
-                                    System.out.println("\nFood added successfully!");
-                                } else {
-                                    System.out.println("\nSomething went wrong try again!");
+                                    }
+                                } catch (Exception e){
+                                    System.out.println("Something went wrong try again!");
                                 }
 
-                            } else if (adminInput == 3){
-                                // ADD UPDATE FOOD LATER
-                                System.out.print("Enter food ID : ");
-                                int foodId = input.nextInt();
-                                input.nextLine();
-                                System.out.print("Enter new food name : ");
-                                String foodName = input.next();
-                                input.nextLine();
-                                System.out.print("Enter new price : ");
-                                double price = input.nextDouble();
-                                input.nextLine();
-                                System.out.print("Enter new quantity : ");
-                                int quantity = input.nextInt();
-                                input.nextLine();
-
-                                Food updatedFood = new Food(foodId,foodName,price,quantity);
-
-                                if (updatedFood.updateFood()){
-                                    System.out.println("\nUpdated food successful!");
-                                } else {
-                                    System.out.println("\nSomething went wrong try again!");
-                                }
-
-
-                            } else if (adminInput == 4) {
-                                // ADD REMOVE FOOD LATER
-
-                            } else if (adminInput == 5){
-                                System.out.println("Logged out in the admin panel!");
+                            } else if (adminChoice == 3){
+                                System.out.println("\nLogged out the admin panel!");
                                 break;
+                            } else {
+                                System.out.println("\nInvalid Input Try Again!");
                             }
 
                         }
 
 
                     }  else if ("Customer".equals(userType)){
-                        System.out.println("Logged in successfully!\n");
+                        System.out.print("\nLogged in successfully!\n");
 
 
                         // ADD CUSTOMER MODULES LATER
                     } else {
 
-                        System.out.println("Invalid username or password! Try again!\n");
+                        System.out.print("\nInvalid username or password! Try again!\n");
 
                     }
 
@@ -147,7 +204,6 @@ public class Main {
                 }
 
             }
-
 
         } catch (Exception e){
             System.out.println("Something went wrong! RESTART APPLICATION");

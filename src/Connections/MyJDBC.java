@@ -131,11 +131,26 @@ public class MyJDBC {
             return false;
         }
 
-        // METHOD TO DELETE FOOD
 
 
+    }
 
+    // METHOD TO DELETE FOOD
+    public static boolean deleteFood(int id) {
 
+        String sql = "DELETE FROM "+Components.FOOD_TABLE+ " WHERE foodId = ? ";
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql)) {
+
+            preSt.setInt(1, id);
+
+            return preSt.executeUpdate() > 0 ;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Something went wrong! RESTART APPLICATION");
+            return false;
+        }
     }
 
 }

@@ -57,6 +57,10 @@ public class Food {
         return MyJDBC.updateFood(this);
     }
 
+    public boolean deleteFood(int id){
+        return MyJDBC.deleteFood(id);
+    }
+
     // DISPLAY CONTENT IN THIS FORMAT
     @Override
     public String toString(){
