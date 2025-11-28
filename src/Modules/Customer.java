@@ -4,12 +4,22 @@ import Connections.MyJDBC;
 
 public class Customer extends User{
 
+    private int userId;
 
-    public Customer(String username, String password){
+
+    public Customer(int userId,String username, String password){
         super(username, password,"Customer");
+        this.userId = userId;
 
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
     // ADD METHODS TO LOGIN AND REGISTER LATER
 
     @Override
@@ -20,5 +30,14 @@ public class Customer extends User{
     @Override
     public String login(String username, String password ){
         return MyJDBC.login(username,password);
+    }
+
+    public boolean addNewCustomer(){
+        return MyJDBC.addCustomer(this);
+    }
+
+    @Override
+    public String toString(){
+        return "userId : "+userId+" | Username : "+getUsername()+" | Password : "+ getPassword();
     }
 }

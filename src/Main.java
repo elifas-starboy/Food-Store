@@ -1,6 +1,7 @@
 // USE MySQL AS THE DATABASE TO STORE ALL YOUR APPLICATION RECORDS
 
 import Connections.MyJDBC;
+import Modules.Admin;
 import Modules.Customer;
 import Modules.Food;
 
@@ -9,7 +10,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        Customer customer = new Customer("","");
+        Customer customer = new Customer(0,"","");
 
         try {
 
@@ -136,11 +137,28 @@ public class Main {
                                         int adminCustomer = input.nextInt();
 
                                         if (adminCustomer == 1){
-                                            // ADD A MODULE TO VIEW ALL CUSTOMER LATER
+                                            System.out.println("\nUsers");
+                                            for(Customer customer1: MyJDBC.viewAllCustomers()){
+                                                System.out.println(customer1);
+                                            }
                                         } else if (adminCustomer == 2) {
-                                            // ADD A MODULE TO ADD A NEW CUSTOMER LATER
+                                            System.out.print("\nEnter new username : ");
+                                            String newUsername = input.next().trim();
+                                            input.nextLine();
+                                            System.out.print("\nEnter password : ");
+                                            String newPassword = input.next().trim();
+
+                                            Customer newCustomer = new Customer(0,newUsername,newPassword);
+
+                                            if (newCustomer.addNewCustomer()){
+                                                System.out.println("\nCustomer added successfully!");
+                                            } else {
+                                                System.out.println("\nSomething went wrong try again!");
+                                            }
+
                                         } else if (adminCustomer == 3) {
                                             // ADD MODULE TO UPDATE CUSTOMER DETAILS
+
                                         } else if (adminCustomer == 4) {
                                             // ADD A MODULE TO DELETE A CUSTOMER
                                         } else if (adminChoice == 5) {
@@ -149,7 +167,6 @@ public class Main {
                                         } else {
                                             System.out.println("\nInvalid Input Try Again!");
                                         }
-
                                     }
                                 } catch (Exception e){
                                     System.out.println("Something went wrong try again!");
@@ -191,7 +208,7 @@ public class Main {
 
                     // checking if the password match
                     if (password.equals(verifyPassword)) {
-                        Customer newCustomer = new Customer(username,password);
+                        Customer newCustomer = new Customer(0,username,password);
                         if (newCustomer.register()){
                             System.out.println("Registered Successfully !");
                         } else {

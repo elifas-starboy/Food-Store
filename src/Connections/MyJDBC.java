@@ -1,9 +1,9 @@
 package Connections;
 
 import CommonComponents.Components;
+import Modules.Customer;
 import Modules.Food;
 import Modules.User;
-import com.sun.source.tree.TryTree;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -152,5 +152,58 @@ public class MyJDBC {
             return false;
         }
     }
+
+    // METHOD TO VIEW ALL USERS
+    public static ArrayList<Customer> viewAllCustomers(){
+
+        ArrayList<Customer> customers = new ArrayList<>();
+
+        String sql = "SELECT * FROM "+Components.USER_TABLE;
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql); ResultSet rs = preSt.executeQuery();){
+
+            while (rs.next()){
+                customers.add(new Customer(
+                        rs.getInt("userId"),
+                        rs.getString("username"),
+                        rs.getString("password")
+                ));
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Something went wrong! RESTART APPLICATION");
+
+        }
+
+        return customers;
+    }
+
+    // METHOD TO ADD A NEW CUSTOMER
+    public static boolean addCustomer(Customer customer){
+
+        String sql = "INSERT INTO "+Components.USER_TABLE+ " (username, password, role) VALUES (?, ?, ?)";
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql)){
+
+            preSt.setString(1, customer.getUsername());
+            preSt.setString(2, customer.getPassword());
+            preSt.setString(3, customer.getRole());
+
+            return preSt.executeUpdate() > 0;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Something went wrong! RESTART APPLICATION");
+            return false;
+        }
+    }
+
+    // METHOD TO UPDATE CUSTOMER DETAILS
+//    public static boolean updateCustomerDetails(int userId){
+//
+//        String sql = "UPDATE "+Components.USER_TABLE+ " SET username = ? , password = ? WHERE userId = ?";
+//    }
+
 
 }
