@@ -157,11 +157,34 @@ public class Main {
                                             }
 
                                         } else if (adminCustomer == 3) {
-                                            // ADD MODULE TO UPDATE CUSTOMER DETAILS
+                                            System.out.print("\nEnter user id to update : ");
+                                            int userId = input.nextInt();
+                                            input.nextLine();
+                                            System.out.print("\nEnter new username : ");
+                                            String username1 = input.next().trim();
+                                            input.nextLine();
+                                            System.out.print("\nEnter new password : ");
+                                            String password1 = input.next().trim();
+
+                                            Customer customer1 = new Customer(userId,username1,password1);
+
+                                            if (customer1.updateCustomerDetails()){
+                                                System.out.println("\nSuccessfully updated customer details.");
+                                            } else {
+                                                System.out.println("\nSomething went wrong try again!");
+                                            }
 
                                         } else if (adminCustomer == 4) {
-                                            // ADD A MODULE TO DELETE A CUSTOMER
-                                        } else if (adminChoice == 5) {
+                                            System.out.print("\nEnter user id to be deleted : ");
+                                            int userId = input.nextInt();
+
+                                            if (MyJDBC.deleteCustomer(userId)){
+                                                System.out.println("\nUser Deleted successfully");
+                                            } else {
+                                                System.out.println("\nInvalid Id try again");
+                                            }
+
+                                        } else if (adminCustomer == 5) {
                                             System.out.println("\nLogged out the customer panel!");
                                             break;
                                         } else {

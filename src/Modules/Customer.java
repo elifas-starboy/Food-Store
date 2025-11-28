@@ -36,6 +36,13 @@ public class Customer extends User{
         return MyJDBC.addCustomer(this);
     }
 
+    public boolean updateCustomerDetails(){
+        return MyJDBC.updateCustomerDetails(this);
+    }
+    public boolean deleteCustomer(int userId){
+        return MyJDBC.deleteCustomer(userId);
+    }
+
     @Override
     public String toString(){
         return "userId : "+userId+" | Username : "+getUsername()+" | Password : "+ getPassword();

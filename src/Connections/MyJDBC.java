@@ -15,7 +15,7 @@ public class MyJDBC {
         try {
             return  DriverManager.getConnection(Components.DB_URL,Components.DB_USERNAME,Components.DB_PASSWORD);
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("Connection to the database failed!");
             return null;
         }
     }
@@ -36,7 +36,6 @@ public class MyJDBC {
 
 
         } catch (SQLException e){
-            e.printStackTrace();
             System.out.println("Something went wrong! RESTART APPLICATION");
             return false;
         }
@@ -58,7 +57,6 @@ public class MyJDBC {
             }
 
         } catch (SQLException e){
-            e.printStackTrace();
             System.out.println("Something went wrong! RESTART APPLICATION");
         }
 
@@ -81,7 +79,6 @@ public class MyJDBC {
             return preSt.executeUpdate() > 0;
 
         } catch (SQLException e){
-            e.printStackTrace();
             System.out.println("Something went wrong! RESTART APPLICATION");
             return false;
         }
@@ -105,7 +102,6 @@ public class MyJDBC {
                 ));
             }
         } catch (SQLException e){
-            e.printStackTrace();
             System.out.println("Something went wrong! RESTART APPLICATION");
         }
 
@@ -126,7 +122,6 @@ public class MyJDBC {
             return preSt.executeUpdate() > 0;
 
         } catch (SQLException e){
-            e.printStackTrace();
             System.out.println("Something went wrong! RESTART APPLICATION");
             return false;
         }
@@ -147,7 +142,6 @@ public class MyJDBC {
             return preSt.executeUpdate() > 0 ;
 
         } catch (SQLException e){
-            e.printStackTrace();
             System.out.println("Something went wrong! RESTART APPLICATION");
             return false;
         }
@@ -171,7 +165,6 @@ public class MyJDBC {
             }
 
         } catch (SQLException e){
-            e.printStackTrace();
             System.out.println("Something went wrong! RESTART APPLICATION");
 
         }
@@ -193,17 +186,46 @@ public class MyJDBC {
             return preSt.executeUpdate() > 0;
 
         } catch (SQLException e){
-            e.printStackTrace();
             System.out.println("Something went wrong! RESTART APPLICATION");
             return false;
         }
     }
 
     // METHOD TO UPDATE CUSTOMER DETAILS
-//    public static boolean updateCustomerDetails(int userId){
-//
-//        String sql = "UPDATE "+Components.USER_TABLE+ " SET username = ? , password = ? WHERE userId = ?";
-//    }
+    public static boolean updateCustomerDetails(Customer customer){
+
+        String sql = "UPDATE "+Components.USER_TABLE+ " SET username = ? , password = ? WHERE userId = ?";
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql)) {
+
+            preSt.setString(1, customer.getUsername());
+            preSt.setString(2, customer.getPassword());
+            preSt.setInt(3, customer.getUserId());
+
+            return preSt.executeUpdate() > 0;
+
+        } catch (SQLException e){
+            System.out.println("Something went wrong! RESTART APPLICATION");
+            return false;
+        }
+    }
+
+    // METHOD TO DELETE A CUSTOMER
+    public static boolean deleteCustomer(int userId){
+
+        String sql = "DELETE FROM "+Components.USER_TABLE+ " WHERE userId = ?";
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql)){
+
+            preSt.setInt(1, userId);
+
+            return preSt.executeUpdate() > 0;
+        } catch (SQLException e){
+            System.out.println("Something went wrong! RESTART APPLICATION");
+            return false;
+        }
+
+    }
 
 
 }
