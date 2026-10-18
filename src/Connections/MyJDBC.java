@@ -15,13 +15,20 @@ public class MyJDBC {
         try {
             return  DriverManager.getConnection(Components.DB_URL,Components.DB_USERNAME,Components.DB_PASSWORD);
         } catch (SQLException e){
-            System.out.println("Connection to the database failed!");
+            System.out.print("Connection to the database failed!");
             return null;
         }
     }
 
     // METHOD TO REGISTER A NEW CUSTOMER
     public static boolean register(User user){
+        if (user == null || user.getUsername() == null || user.getPassword() == null) {
+            return false;
+        }
+
+        if (usernameExists(user.getUsername())) {
+            return false;
+        }
 
         String sql = "INSERT INTO "+Components.USER_TABLE+ "(username, password, role) VALUES(?,?,?)";
 
@@ -36,6 +43,20 @@ public class MyJDBC {
 
 
         } catch (SQLException e){
+            System.out.println("Something went wrong! RESTART APPLICATION");
+            return false;
+        }
+    }
+
+    public static boolean usernameExists(String username) {
+        String sql = "SELECT 1 FROM "+Components.USER_TABLE+" WHERE username = ?";
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql)) {
+            preSt.setString(1, username);
+            try (ResultSet rs = preSt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
             System.out.println("Something went wrong! RESTART APPLICATION");
             return false;
         }
@@ -108,6 +129,62 @@ public class MyJDBC {
         return foods;
     }
 
+    public static Food getFoodById(int foodId) {
+        String sql = "SELECT * FROM "+Components.FOOD_TABLE+" WHERE foodId = ?";
+
+        try (Connection connection = connection(); PreparedStatement preSt = connection.prepareStatement(sql)) {
+            preSt.setInt(1, foodId);
+            try (ResultSet rs = preSt.executeQuery()) {
+                if (rs.next()) {
+                    return new Food(
+                            rs.getInt("foodId"),
+                            rs.getString("foodName"),
+                            rs.getDouble("price"),
+                            rs.getInt("quantity")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Something went wrong! RESTART APPLICATION");
+        }
+
+        return null;
+    }
+
+    public static boolean buyFood(int foodId, int quantity) {
+        if (quantity <= 0) {
+            return false;
+        }
+
+        String selectSql = "SELECT quantity FROM "+Components.FOOD_TABLE+" WHERE foodId = ?";
+        String updateSql = "UPDATE "+Components.FOOD_TABLE+" SET quantity = quantity - ? WHERE foodId = ? AND quantity >= ?";
+
+        try (Connection connection = connection()) {
+            if (connection == null) {
+                return false;
+            }
+
+            try (PreparedStatement selectSt = connection.prepareStatement(selectSql)) {
+                selectSt.setInt(1, foodId);
+                try (ResultSet rs = selectSt.executeQuery()) {
+                    if (!rs.next() || rs.getInt("quantity") < quantity) {
+                        return false;
+                    }
+                }
+            }
+
+            try (PreparedStatement updateSt = connection.prepareStatement(updateSql)) {
+                updateSt.setInt(1, quantity);
+                updateSt.setInt(2, foodId);
+                updateSt.setInt(3, quantity);
+                return updateSt.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("Something went wrong! RESTART APPLICATION");
+            return false;
+        }
+    }
+
     // METHOD TO UPDATE FOOD NAME
     public static boolean updateFood(Food food) {
 
@@ -174,6 +251,13 @@ public class MyJDBC {
 
     // METHOD TO ADD A NEW CUSTOMER
     public static boolean addCustomer(Customer customer){
+        if (customer == null || customer.getUsername() == null || customer.getPassword() == null) {
+            return false;
+        }
+
+        if (usernameExists(customer.getUsername())) {
+            return false;
+        }
 
         String sql = "INSERT INTO "+Components.USER_TABLE+ " (username, password, role) VALUES (?, ?, ?)";
 

@@ -1,23 +1,48 @@
 # Command Line Food Store
-## Requirements 
-MySQL and Jave
-## MySQL command to run
-Create database foot_store; <br> <br>
-CREATE TABLE users( <br>
-userId INT NOT NULL AUTO_INCREMENT, <br>
-username VARCHAR(50) NOT NULL, <br>
-password VARCHAR(50) NOT NULL, <br>
-role VARCHAR(20) NOT NULL, <br>
-PRIMARY KEY (userId)
-<br>);
-<br>
+## Requirements
+- Java JDK
+- MySQL server
 
-CREATE TABLE food (<br>
-foodId INT NOT NULL AUTO_INCREMENT, <br>
-foodName VARCHAR(50) NOT NULL, <br>
-price DECIMAL(10,2) NOT NULL, <br>
-quantity INT NOT NULL, <br>
-PRIMARY KEY (foodId)
-<br>);
+## Database setup
+Create the database and required tables:
+
+```sql
+CREATE DATABASE food_store;
+
+USE food_store;
+
+CREATE TABLE users (
+    userId INT NOT NULL AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    PRIMARY KEY (userId)
+);
+
+CREATE TABLE food (
+    foodId INT NOT NULL AUTO_INCREMENT,
+    foodName VARCHAR(50) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
+    PRIMARY KEY (foodId)
+);
+```
+
+## Features
+- Customer registration and login
+- Admin panel to view, add, update and delete food items
+- Customer panel to view the menu and place orders
+- Inventory auto-updates after each successful purchase
+- Swing GUI for login, registration, and management screens
+
+## Running the project
+Compile the Java files and run the main class. The app opens a Java Swing GUI by default:
+
+```bash
+javac -cp lib/mysql-connector-j-9.3.0.jar -d out/production/"Online Food Store" src/**/*.java
+java -cp "out/production/Online Food Store;lib/mysql-connector-j-9.3.0.jar" Main
+```
+
+If you are using a different MySQL username/password, update the values in `src/CommonComponents/Components.java` before running the app.
 
 

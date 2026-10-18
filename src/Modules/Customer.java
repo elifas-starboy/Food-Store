@@ -20,8 +20,6 @@ public class Customer extends User{
     public void setUserId(int userId) {
         this.userId = userId;
     }
-    // ADD METHODS TO LOGIN AND REGISTER LATER
-
     @Override
     public boolean register(){
         return MyJDBC.register(this);
@@ -30,6 +28,10 @@ public class Customer extends User{
     @Override
     public String login(String username, String password ){
         return MyJDBC.login(username,password);
+    }
+
+    public boolean placeOrder(int foodId, int quantity) {
+        return MyJDBC.buyFood(foodId, quantity);
     }
 
     public boolean addNewCustomer(){
